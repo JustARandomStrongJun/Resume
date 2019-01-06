@@ -5,76 +5,86 @@ import java.util.List;
 import java.util.Objects;
 
 public class ResumeStorage {
+    public static final int MAX_LENTH = 10000;
+    private Resume[] storage = new Resume[MAX_LENTH];
+    private int size = 0;
 
-    //ArrayList<Resume> list = new ArrayList<>();
-    Resume[] resumes = new Resume[10000];
 
 
-    void save(Resume r) {
-        for (int i = 0; i < resumes.length; i++) {
-            if (Objects.equals(resumes[i], null)) {
-                resumes[i] = r;
-                break;
-            }
+    public void save(Resume r) {
+        if (size == MAX_LENTH) {
+            System.out.println("Storage overflow!");
+            return;
         }
-    }
-
-    void update(Resume r) {
-        for (int i = 0; i < resumes.length; i++) {
-            if (!Objects.isNull(resumes[i])) {
-                if (Objects.equals(resumes[i].getUuid(), r.getUuid())) {
-                    resumes[i] = r;
-                    break;
-                }
-            }
+        if (getIndex(r.getUuid()) < 0) {
+            storage[size] = r;
+            size++;
+            return;
         }
+        System.out.println("Sorry! but resume whith uuid " + r.getUuid() + " already exist!");
     }
 
 
-    Resume get(String uuid) {
-        for (int i = 0; i < resumes.length; i++) {
-            if (!Objects.isNull(resumes[i].getUuid())) {
-                return resumes[i];
-            }
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index >= 0) { // extract  to variable
+            //storage[index] = null;
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+            return;
         }
+        System.out.println("Sorry! but resume whith uuid " + uuid + " is absent!");
+    }
+
+
+    public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
+            storage[index] = r;
+            return;
+        }
+        System.out.println("Sorry! but resume whith uuid " + r.getUuid() + " is absent!");
+    }
+
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
+        }
+        System.out.println("Sorry! but resume whith uuid " + uuid + " is absent!");
         return null;
     }
 
 
-    void delete(String uuid) {
-        for (int i = 0; i < resumes.length; i++) {
-            if (!Objects.isNull(resumes[i])) {
-                if (Objects.equals(resumes[i].getUuid(), uuid)) {
-                    resumes[i] = null;
-                    break;
-                }
-            }
+    public Resume[] getAll() {
+        Resume[] resumes = new Resume[size];
+        for (int i = 0; i < size; i++) {
+            resumes[i] = storage[i];
         }
+        return resumes;
     }
 
-    int size() {
-        int count = 0;
-        for (int i = 0; i < resumes.length; i++) {
-            if (!Objects.isNull(resumes[i])) {
-                count++;
-            }
-        }
-        return count;
+
+    public int size() {
+        return size;
     }
 
-    void clear() {
-        for (int i = 0; i < resumes.length; i++) {
-            resumes[i] = null;
+
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
         }
+        size = 0;
+
     }
 
-    Resume[] getAll() {
-        List<Resume> list = new ArrayList<>();
-        for (int i = 0; i < resumes.length; i++) {
-            if(!Objects.isNull(resumes[i])){
-                list.add(resumes[i]);
+    private int getIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                return i;
             }
         }
-        return  list.toArray(new Resume[list.size()]);
+        return -1;
     }
 }
