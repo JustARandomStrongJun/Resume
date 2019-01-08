@@ -1,6 +1,6 @@
 package com.zzz;
 
-public class Resume {
+public class Resume implements Comparable<Resume>{
     private String uuid;
     //see you later!
     //private String fullName;
@@ -16,5 +16,10 @@ public class Resume {
     @Override
     public String toString() {
         return uuid;
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        return this.uuid.compareTo(o.getUuid());
     }
 }

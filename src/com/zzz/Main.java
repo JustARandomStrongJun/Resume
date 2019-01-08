@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    private final static ResumeStorage ARRAY_STORAGE = new ResumeStorage();
-    private static  long TIMEOUT;
+    //private final static ResumeStorage ARRAY_STORAGE = new ResumeStorage();
+    private final static SortedStorage ARRAY_STORAGE = new SortedStorage();
+    private static long TIMEOUT;
 
 
     public static void main(String[] args) throws IOException {
@@ -16,7 +17,7 @@ public class Main {
             System.out.print("Введите одну из команд - (list | save uuid | delete uuid | get uuid | update uuid | clear | exit): ");
             String[] params = reader.readLine().trim().toLowerCase().split(" ");
             if (params.length < 1 || params.length > 2) {
-                System.out.println("Неверная команда.");
+                System.out.println("Неверная команда1");
                 continue;
             }
             String uuid = null;
@@ -62,7 +63,7 @@ public class Main {
                 case "exit":
                     return;
                 default:
-                    System.out.println("Неверная команда.");
+                    System.out.println("Неверная команда2");
                     break;
             }
         }

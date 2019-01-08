@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Resume:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Resume_jar</output-path>
+    <root id="archive" name="Resume.jar">
+      <element id="module-output" name="Resume" />
+    </root>
+  </artifact>
+</component>
